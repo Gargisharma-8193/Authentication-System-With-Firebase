@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firebase Auth System</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.html">
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <button class="toggle-theme" onclick="toggleDarkMode()">🌙</button>
+
+    <h1>Login / Signup</h1>
+
+
+    <!-- 📲 Phone OTP Login -->
+    <div class="form-box">
+      <h2>Phone Login (Test Mode)</h2>
+      <input type="tel" id="phone" value="+911234567890" />
+      <button onclick="sendOTP()">Send OTP</button>
+      <div id="recaptcha-container"></div>
+      <input type="text" id="otp" value="123456" />
+      <button onclick="verifyOTP()">Verify OTP</button>
+    </div>
+
+    <div class="divider">or</div>
+
+    <!-- 📧 Email/Password Login -->
+    <div class="form-box">
+      <h2>Email Login</h2>
+      <input type="email" id="email" placeholder="Enter email" />
+      <input type="password" id="password" placeholder="Enter password" />
+      <button onclick="signUp(email.value, password.value)">Sign Up with Email</button>
+      <button onclick="login(email.value, password.value)">Login with Email</button>
+    </div>
+
+    <div class="divider">or</div>
+    <button onclick="forgotPassword()">Forgot Password?</button>
+
+
+    <!-- 🔐 Social Logins -->
+    <div class="oauth-buttons">
+      <h2>OAuth Logins</h2>
+      <button onclick="signInWithGoogle()">Sign in with Google</button>
+      <button onclick="signInWithFacebook()">Sign in with Facebook</button>
+      <button onclick="signInWithGitHub()">Sign in with GitHub</button>
+    </div>
+
+    <button onclick="logout()">Logout</button>
+    <p id="user-status">Checking login status...</p>
+  </div>
+  <div id="admin-only" style="display: none;">This is only for admin.</div>
+
+
+  <!-- Firebase Auth Logic -->
+  <script src="script.js"></script>
+</body>
+</html>

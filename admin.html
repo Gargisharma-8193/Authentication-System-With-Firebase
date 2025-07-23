@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>function updateUserRole() {
+  const email = document.getElementById("target-email").value;
+  const role = document.getElementById("role-select").value;
+
+  // Step 1: Find UID by email
+  db.collection("users").get().then(snapshot => {
+    let found = false;
+    snapshot.forEach(doc => {
+      if (doc.data().email === email) {
+        found = true;
+        db.collection("users").doc(doc.id).update({ role })
+          .then(() => {
+            document.getElementById("update-status").innerText = "✅ Role updated successfully.";
+          })
+          .catch(err => {
+            document.getElementById("update-status").innerText = "❌ Error updating role.";
+          });
+      }
+    });
+    if (!found) {
+      document.getElementById("update-status").innerText = "❌ User not found.";
+    }
+  });
+}
+</script>
+<body>
+    <h2>Admin Panel - Set User Role</h2>
+<input type="text" id="target-email" placeholder="User Email">
+<select id="role-select">
+  <option value="user">User</option>
+  <option value="admin">Admin</option>
+</select>
+<button onclick="updateUserRole()">Update Role</button>
+<p id="update-status"></p>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+/* ==== Base Reset ==== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 2rem;
+}
+
+/* ==== Light & Dark Theme Variables ==== */
+:root {
+  --bg: #f4f6fb;
+  --text: #1f1f1f;
+  --card: #ffffff;
+  --btn: #4f46e5;
+  --btn-hover: #4338ca;
+  --divider: #ccc;
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #e2e2e2;
+  --card: #1e1e1e;
+  --btn: #3b82f6;
+  --btn-hover: #2563eb;
+  --divider: #333;
+}
+
+/* ==== Container ==== */
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 2rem;
+  background-color: var(--card);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  color: var(--text);
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+/* ==== Input & Button Styles ==== */
+input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  border: 1px solid var(--divider);
+  border-radius: 0.75rem;
+  background: transparent;
+  color: var(--text);
+}
+
+input::placeholder {
+  color: #999;
+}
+
+button {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  background-color: var(--btn);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--btn-hover);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.divider {
+  margin: 1.5rem 0;
+  color: var(--divider);
+  position: relative;
+  text-align: center;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  height: 1px;
+  background: var(--divider);
+  position: absolute;
+  top: 50%;
+  width: 45%;
+}
+
+.divider::before {
+  left: 0;
+}
+.divider::after {
+  right: 0;
+}
+
+/* ==== Responsive Design ==== */
+@media (max-width: 480px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  button, input {
+    font-size: 0.95rem;
+  }
+}
+
+/* ==== Toggle Switch (Optional Dark Mode Button) ==== */
+.toggle-theme {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--divider);
+  border-radius: 50%;
+  padding: 0.5rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
