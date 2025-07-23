@@ -4,13 +4,14 @@ const firebaseConfig = {
   authDomain: "fir-authentication-syste-cf6bd.firebaseapp.com",
   projectId: "fir-authentication-syste-cf6bd",
   appId: "1:108907873313:web:1764ee75a74531ba260f60",
-  messagingSenderId: "108907873313"
+  messagingSenderId: "108907873313",
+  storageBucket: "fir-authentication-syste-cf6bd.firebasestorage.app",
 };
 
 // ✅ Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-const db = firebase.firestore();
+// const db = firebase.firestore();
 
  
 // 🌗 Toggle Dark Mode
@@ -20,57 +21,19 @@ function toggleDarkMode() {
   btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
 }
 //  Auth State Listener
-auth.onAuthStateChanged(async (user) => {
+auth.onAuthStateChanged(user => {
   const status = document.getElementById("user-status");
   if (user) {
-    const name = user.displayName || user.email || user.phoneNumber || "Unknown User";
-    
-    // Optional: fetch role from Firestore
-    let role = "user";
-    try {
-      const doc = await db.collection("users").doc(user.uid).get();
-      if (doc.exists && doc.data().role) {
-        role = doc.data().role;
-      }
-    } catch (e) {
-      console.warn("Failed to fetch role:", e);
-    }
-
+    const name = user.displayName || user.email || user.phoneNumber || "User";
     status.innerHTML = `
-      <span style="color:green;">🟢 Logged in</span><br>
-      <strong>User:</strong> ${name}<br>
-      <strong>Role:</strong> ${role}
-      ${user.photoURL ? `<br><img src="${user.photoURL}" alt="User Photo" width="40" style="border-radius: 50%;">` : ""}
+      ✅ Logged in as: ${name}
+      ${user.photoURL ? `<br><img src="${user.photoURL}" width="40" style="border-radius:50%;">` : ""}
     `;
   } else {
-    status.innerHTML = `<span style="color:red;">🔴 Not logged in</span>`;
-  }
-   if (user) {
-    const doc = await db.collection("users").doc(user.uid).get();
-    const role = doc.data()?.role;
-
-    if (role === "admin") {
-      window.location.href = "admin.html";
-    } else {
-      window.location.href = "user.html";
-    }
+    status.innerHTML = "🔴 Not logged in";
   }
 });
-async function saveOAuthUser(result) {
-  const user = result.user;
-  const userRef = db.collection("users").doc(user.uid);
-  const doc = await userRef.get();
-  if (!doc.exists) {
-    await userRef.set({
-      name: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
-      role: "user",
-      createdAt: new Date()
-    });
-  }
-  alert("Login successful!");
-}
+
 
 
 // 📧 Email Sign Up
@@ -99,13 +62,14 @@ function login(email, password) {
     });
 }
 function forgotPassword() {
-  const email = prompt("Enter your email to reset password:");
+  const email = prompt("Enter your email:");
   if (email) {
     auth.sendPasswordResetEmail(email)
-      .then(() => alert("Password reset email sent."))
-      .catch((error) => alert(error.message));
+      .then(() => alert("📧 Reset email sent"))
+      .catch(err => alert("❌ " + err.message));
   }
 }
+
 
 // 🔐 Google Login
 function signInWithGoogle() {
@@ -205,29 +169,29 @@ function logout() {
   }).catch((error) => {
     alert("❌ Logout error: " + error.message);
   });
-}
+} 
 
 //  Update user status
-function updateUserStatus() {
-  const status = document.getElementById("user-status");
-  const user = firebase.auth().currentUser;
-  if (user) {
-    status.innerText = `✅ Logged in as: ${user.email || user.phoneNumber}`;
-  } else {
-    status.innerText = "👤 Not logged in";
-  }
-}
+// function updateUserStatus() {
+//   const status = document.getElementById("user-status");
+//   const user = firebase.auth().currentUser;
+//   if (user) {
+//     status.innerText = `✅ Logged in as: ${user.email || user.phoneNumber}`;
+//   } else {
+//     status.innerText = "👤 Not logged in";
+//   }
+// }
 
-// ✅ Monitor auth state on page load
-firebase.auth().onAuthStateChanged((user) => {
-  updateUserStatus();
-});
-// Store user info + role
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    db.collection("users").doc(user.uid).set({ role: "user" });
-  }
-});
+// // ✅ Monitor auth state on page load
+// firebase.auth().onAuthStateChanged((user) => {
+//   updateUserStatus();
+// });
+// // Store user info + role
+// firebase.auth().onAuthStateChanged((user) => {
+//   if (user) {
+//     db.collection("users").doc(user.uid).set({ role: "user" });
+//   }
+// });
 // After user signs in (in .then block)
 // const user = result.user;
 // db.collection("users").doc(user.uid).get().then(doc => {
@@ -238,26 +202,7 @@ firebase.auth().onAuthStateChanged((user) => {
 //     });
 //   }
 // });
-auth.onAuthStateChanged(async (user) => {
-  if (user) {
-    const doc = await db.collection("users").doc(user.uid).get();
-    const role = doc.data()?.role;
 
-    if (!doc.exists) {
-      // Only set default role if user doc doesn't exist
-      await db.collection("users").doc(user.uid).set({
-        email: user.email || null,
-        role: "user"
-      });
-    }
-
-    if (role === "admin") {
-      window.location.href = "admin.html";
-    } else {
-      window.location.href = "user.html";
-    }
-  }
-});
 
 
 
