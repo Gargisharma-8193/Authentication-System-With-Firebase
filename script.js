@@ -12,7 +12,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-
+ 
 // 🌗 Toggle Dark Mode
 function toggleDarkMode() {
   document.body.classList.toggle('dark');
