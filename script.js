@@ -119,7 +119,7 @@ function signInWithGoogle() {
       alert("❌ Google login error: " + error.message);
     });
 }
-
+ 
 // 🔐 Facebook Login
 function signInWithFacebook() {
   const provider = new firebase.auth.FacebookAuthProvider();
